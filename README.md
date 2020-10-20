@@ -12,6 +12,8 @@ Wang ManLin (3035535016)
 
 In this project, a Tic-Tac-Toe game will be designed in which two players take turns to place a chess(O or X) to complete a row, a column, or a diagonal with either three O's or three X's drawn in the spaces of a grid of nine squares. The first one who succeeds in placing three of their marks in a horizontal, vertical, or diagonal row is the winner. 
 
+<img src="image/1.png" width="400" >
+
 # 3. Features to be implemented
 
 ### Generation of game sets or events
@@ -20,7 +22,7 @@ This game will allow users to choose between two different game modes: single-pl
 
 ### Data structures for storing game status: 
 
-A 3 $\times$ 3 array and a boolean variable (indicating who is the next one to move) will be used to store the game status.
+A $3 \times 3$ array and a boolean variable (indicating who is the next one to move) will be used to store the game status.
 
 ### File input/output
 
