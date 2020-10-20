@@ -22,7 +22,7 @@ This game will allow users to choose between two different game modes: single-pl
 
 ### Data structures for storing game status: 
 
-A $3 \times 3$ array and a boolean variable (indicating who is the next one to move) will be used to store the game status.
+A 3 * 3 array and a boolean variable (indicating who is the next one to move) will be used to store the game status.
 
 ### File input/output
 
