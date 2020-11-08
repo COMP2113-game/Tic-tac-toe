@@ -1,4 +1,0 @@
-Board chesspiece Game(minimax) tictactoeGame(File IO)
-IO: archive
-Generation of random game sets or events: 1.random 2.minimax
-comment
