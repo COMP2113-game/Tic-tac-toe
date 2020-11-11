@@ -98,14 +98,14 @@ bool Game::checkForConnectingLines(Chesspiece chess)
     char ch = chess.getPieceLabel();
 
      return (
-        (getPieceAtPosition(1).getPieceLabel() == ch && getPieceAtPosition(2).getPieceLabel() == ch && getPieceAtPosition(3).getPieceLabel() == ch) ||
-        (getPieceAtPosition(4).getPieceLabel() == ch && getPieceAtPosition(5).getPieceLabel() == ch && getPieceAtPosition(6).getPieceLabel() == ch) ||
-        (getPieceAtPosition(7).getPieceLabel() == ch && getPieceAtPosition(8).getPieceLabel() == ch && getPieceAtPosition(9).getPieceLabel() == ch) ||
-        (getPieceAtPosition(1).getPieceLabel() == ch && getPieceAtPosition(4).getPieceLabel() == ch && getPieceAtPosition(7).getPieceLabel() == ch) ||
-        (getPieceAtPosition(2).getPieceLabel() == ch && getPieceAtPosition(5).getPieceLabel() == ch && getPieceAtPosition(8).getPieceLabel() == ch) ||
-        (getPieceAtPosition(3).getPieceLabel() == ch && getPieceAtPosition(6).getPieceLabel() == ch && getPieceAtPosition(9).getPieceLabel() == ch) ||
-        (getPieceAtPosition(1).getPieceLabel() == ch && getPieceAtPosition(5).getPieceLabel() == ch && getPieceAtPosition(9).getPieceLabel() == ch) ||
-        (getPieceAtPosition(3).getPieceLabel() == ch && getPieceAtPosition(5).getPieceLabel() == ch && getPieceAtPosition(7).getPieceLabel() == ch));
+        (getPieceAtPos(1).getPieceLabel() == ch && getPieceAtPos(2).getPieceLabel() == ch && getPieceAtPos(3).getPieceLabel() == ch) ||
+        (getPieceAtPos(4).getPieceLabel() == ch && getPieceAtPos(5).getPieceLabel() == ch && getPieceAtPos(6).getPieceLabel() == ch) ||
+        (getPieceAtPos(7).getPieceLabel() == ch && getPieceAtPos(8).getPieceLabel() == ch && getPieceAtPos(9).getPieceLabel() == ch) ||
+        (getPieceAtPos(1).getPieceLabel() == ch && getPieceAtPos(4).getPieceLabel() == ch && getPieceAtPos(7).getPieceLabel() == ch) ||
+        (getPieceAtPos(2).getPieceLabel() == ch && getPieceAtPos(5).getPieceLabel() == ch && getPieceAtPos(8).getPieceLabel() == ch) ||
+        (getPieceAtPos(3).getPieceLabel() == ch && getPieceAtPos(6).getPieceLabel() == ch && getPieceAtPos(9).getPieceLabel() == ch) ||
+        (getPieceAtPos(1).getPieceLabel() == ch && getPieceAtPos(5).getPieceLabel() == ch && getPieceAtPos(9).getPieceLabel() == ch) ||
+        (getPieceAtPos(3).getPieceLabel() == ch && getPieceAtPos(5).getPieceLabel() == ch && getPieceAtPos(7).getPieceLabel() == ch));
 }
 
 GameDecision Game::checkForWinners()
@@ -170,7 +170,7 @@ void Game::printManual()
 // Arguments:   None
 // Returns:     None
 void Game::start(){
-    cout << "\nYou will start first! You will be \"X\":" << endl;
+    cout << "You will start first! You will be \"X\":" << endl;
     gameContinue = true;
     string in;
     // loop until there is a winner or user save the current game
@@ -191,7 +191,7 @@ void Game::start(){
         }
 
         // check if user input is valid
-        while  (!isValidPosition(input) || !isEmpty(input)) 
+        while  (!isValidPos(input) || !isEmpty(input)) 
         {
             cout << RED << "Please choose a valid move!" << RESET << endl;
             cin >> in;
@@ -215,8 +215,7 @@ void Game::start(){
             gameContinue = false;
         }
         else 
-        {
-            // Impossible level robot, minimax agent, please modify and add random agent here
+        {   // Impossible level robot, minimax agent, please modify and add random agent here
             minimax(false, 0); //false indicates it is computer's turn
             insertToBoard(getPositionMin(), robot_piece);
 
@@ -243,7 +242,7 @@ void Game::saveGame()
     if (myfile.is_open()){
         for (int i = 1; i < MAX_BOARD_SIZE; i++)
         {   
-            Chesspiece pieceAtPositioni = getPieceAtPosition(i);
+            Chesspiece pieceAtPositioni = getPieceAtPos(i);
             if (pieceAtPositioni.getPieceLabel() == 'X')
                 myfile << 'X' << " ";
             else if (pieceAtPositioni.getPieceLabel() == 'O')

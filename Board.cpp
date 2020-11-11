@@ -7,16 +7,22 @@ using namespace std;
 #define LIGHT_GREEN "\033[01;32m"
 #define BOARD_SIZE 10
 
+/* Constructor */
 Board::Board()
 {
+    // creat dynamic char array to store the board of the game
     board = new char(BOARD_SIZE);
     for (int i = 1; i < BOARD_SIZE; ++i)
     {
         board[i] = '_';
     }    
 }
+
+/* Destructor */
+// called for class Board when it passes out of scope or is explicitly deleted.
 Board::~Board()
 {
+    // free up memory
     delete [] board;
     board = NULL;
 }
@@ -51,7 +57,8 @@ bool Board::insertToBoard(int pos, Chesspiece input)
 // Returns:     If input position is empty or not (bool)
 bool Board::isEmpty(int pos)
 {
-    return (isdigit(board[pos]));
+    
+    return (board[pos] == '_');
 }
 
 // removePos
@@ -111,13 +118,3 @@ void Board::print_board()
     }
     cout << endl;
 }
-
-// // isValidInput
-// // Purpose:     print the current chess board
-// // Arguments:   None
-// // Returns:     None
-// bool Board::isValidInput(Chesspiece input)
-// {
-//     char c = input.getPieceLabel();
-//     return (c == 'X' || c == 'O' || c == '_');
-// }
