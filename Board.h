@@ -5,14 +5,14 @@ class Board {
   public:
     Board();
     ~Board();
-    bool insertIntoPosition(int position, Chesspiece input);
-    bool isPositionEmpty(int position);
-    bool removePosition(int position);
-    Chesspiece getPieceAtPosition(int position);
+    bool insertToBoard(int pos, Chesspiece input);
+    bool isEmpty(int pos);
+    bool removePos(int pos);
+    Chesspiece getPieceAtPos(int pos);
     const int boardSize();
-    bool isValidPosition(int position);
+    bool isValidPos(int pos);
     void print_board();
-    bool isValidInput(Chesspiece input);
+  
   protected:  
     char *board;
 };

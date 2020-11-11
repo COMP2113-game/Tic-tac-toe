@@ -40,16 +40,16 @@ int Game::minimax(bool playerTurn, int n)
 
     for (int i = 1; i < boardSize(); i++)
     {
-        if(isPositionEmpty(i))
+        if(isEmpty(i))
         {
             char pieceLabel = playerTurn ? 'X' : 'O'; //place 'X' if it is player turn, else 'O'
             Chesspiece piece(pieceLabel);
-            insertIntoPosition(i, piece);
+            insertToBoard(i, piece);
             
             gain = minimax(!playerTurn, n + 1);
             
             piece.setPieceLabel('_');
-            insertIntoPosition(i, piece);
+            insertToBoard(i, piece);
 
             if (playerTurn)
             {
@@ -84,7 +84,7 @@ bool Game::isGameADraw()
     
     for (int i = 1; i < boardSize(); i++)
     {
-        if (isPositionEmpty(i))
+        if (isEmpty(i))
         {
             sFilled = false;
             break;
@@ -125,15 +125,29 @@ GameDecision Game::checkForWinners()
     return winResults;
 }
 
+// start
+// Purpose:     Allow user to choose between starting a game and continue from the last game
+// Arguments:   None
+// Returns:     None
 void Game::printManual()
 {
     int size = boardSize();
-    cout << "Enter \"CONTINUE\" to continue playing the last saved game, enter \"NEW\" to start a new game"<<endl;
+    cout << "Enter \"CONT\" to continue playing the last saved game, enter \"NEW\" to start a new game"<<endl;
     string cmd;
     cin >> cmd;
     bool validInput = 0;
+    cout << "Please familiarize yourself with the laid out of the board:\n" << endl;
+    cout << "\t\t\t";
+    cout << LIGHT_PURPLE;
+    for (int i = 1; i < boardSize(); i++)
+    {   
+        cout << i << " ";
+        if (i % 3 == 0)
+            cout << "\n\t\t\t";
+    }
+    cout << RESET;
     while (!validInput){
-        if (cmd == "CONTINUE"){
+        if (cmd == "CONT"){
             validInput = 1;
             readGame();
         }
@@ -151,6 +165,10 @@ void Game::printManual()
     }
 }
 
+// start
+// Purpose:     Start the game
+// Arguments:   None
+// Returns:     None
 void Game::start(){
     cout << "\nYou will start first! You will be \"X\":" << endl;
     gameContinue = true;
@@ -173,13 +191,13 @@ void Game::start(){
         }
 
         // check if user input is valid
-        while  (!isValidPosition(input) || !isPositionEmpty(input)) 
+        while  (!isValidPosition(input) || !isEmpty(input)) 
         {
             cout << RED << "Please choose a valid move!" << RESET << endl;
             cin >> in;
             input = atoi(in.c_str());
         }
-        insertIntoPosition(input, player_piece);
+        insertToBoard(input, player_piece);
 
         cout << "Board:\n";
         print_board();
@@ -198,8 +216,9 @@ void Game::start(){
         }
         else 
         {
+            // Impossible level robot, minimax agent, please modify and add random agent here
             minimax(false, 0); //false indicates it is computer's turn
-            insertIntoPosition(getPositionMin(), robot_piece);
+            insertToBoard(getPositionMin(), robot_piece);
 
             cout << "Robot is making a move..." << endl;
             cout << "And robot puts a O at " << getPositionMin() << endl;
@@ -252,14 +271,14 @@ void Game::readGame(){
         int position = 1;
         while ( myfile >> piece ){
             if (piece == 'X') {
-                insertIntoPosition(position, player_piece);
+                insertToBoard(position, player_piece);
             }
             else if (piece == 'O') {
-                insertIntoPosition(position, robot_piece);
+                insertToBoard(position, robot_piece);
             }
             position ++;
         }
-        cout << "\nBoard loaded from last game:\n";
+        cout << "\nBoard loaded from the last saved game:\n";
         print_board();
         myfile.close();
     }
