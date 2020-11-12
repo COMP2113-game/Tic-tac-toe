@@ -8,7 +8,7 @@ public:
     Chesspiece();
     Chesspiece(char piece);
     const char getPieceLabel();
-    void setPieceLabel(char chesspiece);
+    void setPieceLabel(char Chesspiece);
 private:
     char pieceLabel;
 };

@@ -14,7 +14,7 @@ private:
     bool gameContinue;
     int getPositionMax();
     int getPositionMin();
-    int randomMove(bool playerTurn);
+    int randomMove();
     int minimax(bool playerTurn, int n);
     bool isGameADraw();
     bool checkForConnectingLines(Chesspiece chess);

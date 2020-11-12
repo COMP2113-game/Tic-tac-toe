@@ -23,62 +23,67 @@ Game::Game()
     gameContinue = true;
 }
 
+// getPositionMax
+// Purpose:     get the value of positionMax
+// Arguments:   None
+// Returns:     positionMax (int)
 int Game::getPositionMax()
 {
     return positionMax;
 }
 
+// getPositionMin
+// Purpose:     get the value of positionMin
+// Arguments:   None
+// Returns:     positionMin (int)
 int Game::getPositionMin()
 {
     return positionMin;
 }
 
-// start
+// randomMove
 // Purpose:     Get the random move of computer
-// Arguments:   bool playerTurn
-// Returns:     position(1-9)
-int Game::randomMove(bool playerTurn)
+// Arguments:   None
+// Returns:     randomly generated position(1-9) (int)
+int Game::randomMove()
 {
-    for (int i = 1; i < boardSize(); i++)
-    {
-        if(isEmpty(i))
-        {
-            char pieceLabel = playerTurn ? 'X' : 'O'; //place 'X' if it is player turn, else 'O'
-            Chesspiece piece(pieceLabel);
-            insertToBoard(i, piece);
-            
-            piece.setPieceLabel('_');
-            insertToBoard(i, piece);
-
+    bool isValidMove = false;
+    
     srand(time(NULL));
     int position = rand() % 9 + 1;
+    while (!isValidMove)
+    {
+        if (isEmpty(position))
+        {
+            position ++;
+        }
+        else
+        {
+            isValidMove = true;
+        }
+    }
     return position;
 }
 
-// start
+// minimax
 // Purpose:     Get the optimal move of computer using Minimax algorithm
 // Arguments:   bool playerTurn, int n
-// Returns:     (playerTurn) ? max : min
+// Returns:     max when it is player's turn;  min when it is computer's turn
 int Game::minimax(bool playerTurn, int n)
 {
     int gain = 0;
     int max = numeric_limits<int>::lowest();
     int min = numeric_limits<int>::max();
     
-    GameDecision whoWins = checkForWinners();
+    GameDecision whoWins = checkForWinner();
     if (whoWins == player || whoWins == computer || isGameADraw())
         return whoWins;
     
     for (int i = 1; i < boardSize(); i++)
     {
-        char pieceLabel = playerTurn ? 'X' : 'O'; //place 'X' if it is player turn, else 'O'
-        if (playerTurn)
-        {
-            
-        }
         if(isEmpty(i))
         {
-            char pieceLabel = playerTurn ? 'X' : 'O'; //place 'X' if it is player turn, else 'O'
+            char pieceLabel = playerTurn ? 'X' : 'O'; //place 'X' if it is player's turn, else 'O'
             Chesspiece piece(pieceLabel);
             insertToBoard(i, piece);
             
@@ -114,22 +119,30 @@ int Game::minimax(bool playerTurn, int n)
     return (playerTurn) ? max : min;
 }
 
+// isGameADraw
+// Purpose:     Check if the game is a draw
+// Arguments:   None
+// Returns:     If the game is a draw or not (bool)
 bool Game::isGameADraw()
 {
-    GameDecision winResults = checkForWinners();
-    bool sFilled = true;
+    GameDecision winResults = checkForWinner();
+    bool boardFilled = true;
     
     for (int i = 1; i < boardSize(); i++)
     {
         if (isEmpty(i))
         {
-            sFilled = false;
+            boardFilled = false;
             break;
         }
     }
-    return (winResults == allelse && sFilled);
+    return (winResults == allelse && boardFilled);
 }
 
+// checkForConnectingLines
+// Purpose:     Check if any player's chesses connect a line
+// Arguments:   chess (Chesspiece)
+// Returns:     If any player's chesses connect a line or not (bool)
 bool Game::checkForConnectingLines(Chesspiece chess)
 {
     char ch = chess.getPieceLabel();
@@ -145,30 +158,34 @@ bool Game::checkForConnectingLines(Chesspiece chess)
             (getPieceAtPos(3).getPieceLabel() == ch && getPieceAtPos(5).getPieceLabel() == ch && getPieceAtPos(7).getPieceLabel() == ch));
 }
 
+// checkForWinner
+// Purpose:     Check who is the winner
+// Arguments:   None
+// Returns:     the winner (player or computer)
 GameDecision Game::checkForWinner()
 {
     GameDecision winResults = allelse;
-    Chesspiece piece('X');
-    Chesspiece anotherpiece('O');
     
-    if (checkForConnectingLines(piece.getPieceLabel()))
+    if (checkForConnectingLines(player_piece.getPieceLabel()))
     {
         winResults = player;
     }
-    else if(checkForConnectingLines(anotherpiece.getPieceLabel()))
+    else if(checkForConnectingLines(robot_piece.getPieceLabel()))
     {
         winResults = computer;
     }
     return winResults;
 }
 
-// start
-// Purpose:     Allow user to choose between starting a game and continue from the last game
+// printManual
+// Purpose:     Print the manual to instruct player to input properly
+//              First ask if player want to continue the last saved game
+//              If so, read the last saved game
+//              Otherwize, ask player to choose the level
 // Arguments:   None
 // Returns:     None
 void Game::printManual()
 {
-    int size = boardSize();
     cout << "*****Tic-Tac-Toe*****" << endl;
     cout << "Please familiarize yourself with the layout of the board:\n" << endl;
     cout << "\t\t\t";
@@ -184,6 +201,7 @@ void Game::printManual()
     string cmd;
     cin >> cmd;
     bool validInput = 0;
+    int GameLevel;
     
     while (!validInput)
     {
@@ -216,15 +234,17 @@ void Game::printManual()
 }
 
 // start
-// Purpose:     Start the game
+// Purpose:     Start the game and continue the game round by round until the game ends or the
+//              player wants to save the game and exit
 // Arguments:   None
 // Returns:     None
 void Game::start()
 {
     cout << "You will start first! You will be \"X\":" << endl;
     gameContinue = true;
-    string in;
-    // loop until there is a winner or user save the current game
+    string input;
+    
+    // loop until there is a winner or user saves the current game
     while(gameContinue)
     {
         cout << "It's your turn now, "
@@ -232,11 +252,11 @@ void Game::start()
         "Enter 1-9 to place your move: "<<endl;
         
         // Get user input
-        cin >> in;
-        int input = atoi(in.c_str());
+        cin >> input;
+        int movePosition = atoi(input.c_str());
         
         // Save current game if user requests it
-        if (in=="SAVE")
+        if (input == "SAVE")
         {
             saveGame();
             gameContinue = false;
@@ -245,13 +265,13 @@ void Game::start()
         
         // Check if user input is valid
         // If so, check if the position is empty
-        while  (!isValidPos(input) || !isEmpty(input))
+        while  (!isValidPos(movePosition) || !isEmpty(movePosition))
         {
             cout << RED << "Please choose a valid move!" << RESET << endl;
-            cin >> in;
-            input = atoi(in.c_str());
+            cin >> input;
+            movePosition = atoi(input.c_str());
         }
-        insertToBoard(input, player_piece);
+        insertToBoard(movePosition, player_piece);
         
         cout << "Board:\n";
         print_board();
@@ -272,11 +292,10 @@ void Game::start()
         {   // Impossible level robot, minimax agent, please modify and add random agent here
             if (GameLevel == 1)
             {
-                randomMove();
-                insertToBoard(randomMove, robot_piece);
+                insertToBoard(randomMove(), robot_piece);
                 
                 cout << "Robot is making a move..." << endl;
-                cout << "And robot puts a O at " << getPositionMin() << endl;
+                cout << "And robot puts a O at " << randomMove() << endl;
                 print_board();
             }
             if (GameLevel == 2)
@@ -289,7 +308,7 @@ void Game::start()
                 print_board();
             }
                 
-            if (checkForWinners() == computer)
+            if (checkForWinner() == computer)
             {
                 cout << LIGHT_PURPLE << "Robot wins!" << RESET << endl;
                 gameContinue = false;

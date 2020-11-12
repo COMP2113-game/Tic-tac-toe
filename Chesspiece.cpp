@@ -1,11 +1,11 @@
 #include "Chesspiece.h"
 using namespace std;
 
-Chesspiece::chesspiece(){
+Chesspiece::Chesspiece(){
     pieceLabel = ' ';
 }
 
-Chesspiece::chesspiece(char piece){
+Chesspiece::Chesspiece(char piece){
     setPieceLabel(piece);
 }
 
@@ -14,10 +14,10 @@ const char Chesspiece::getPieceLabel()
     return pieceLabel;
 }
 
-void Chesspiece::setPieceLabel(char chesspiece){
-    if (chesspiece == 'X' || chesspiece == 'O' || chesspiece == '_')
+void Chesspiece::setPieceLabel(char Chesspiece){
+    if (Chesspiece == 'X' || Chesspiece == 'O' || Chesspiece == '_')
     {
-        pieceLabel = chesspiece;
+        pieceLabel = Chesspiece;
     } else {
         pieceLabel = ' ';
     }
