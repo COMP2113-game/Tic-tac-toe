@@ -2,19 +2,24 @@
 #include "Chesspiece.h"
 #include <iostream>
 #include <fstream>
+#include <limits>
+#include <cstdlib>
+#include <ctime>
 
 #define LIGHT_PURPLE "\033[01;35m"
 #define RED "\033[22;31m"
 #define RESET "\033[0m"
 #define LIGHT_GREEN "\033[01;32m"
-#define INFINITY 1073741824
-#define MAX_BOARD_SIZE 10
 using namespace std;
 
 static int positionMax, positionMin;
+int GameLevel;
+const int MAX_BOARD_SIZE = 10;
 Chesspiece player_piece('X');
 Chesspiece robot_piece('O');
-Game::Game(){
+
+Game::Game()
+{
     gameContinue = true;
 }
 
@@ -29,14 +34,36 @@ int Game::getPositionMin()
 }
 
 // start
-// Purpose:     Allow user to choose between starting a game and continue from the last game
+// Purpose:     Get the random move of computer
+// Arguments:   bool playerTurn
+// Returns:     position(1-9)
+int Game::randomMove(bool playerTurn)
+{
+    for (int i = 1; i < boardSize(); i++)
+    {
+        if(isEmpty(i))
+        {
+            char pieceLabel = playerTurn ? 'X' : 'O'; //place 'X' if it is player turn, else 'O'
+            Chesspiece piece(pieceLabel);
+            insertToBoard(i, piece);
+            
+            piece.setPieceLabel('_');
+            insertToBoard(i, piece);
+
+    srand(time(NULL));
+    int position = rand() % 9 + 1;
+    return position;
+}
+
+// start
+// Purpose:     Get the optimal move of computer using Minimax algorithm
 // Arguments:   bool playerTurn, int n
 // Returns:     (playerTurn) ? max : min
 int Game::minimax(bool playerTurn, int n)
 {
     int gain = 0;
-    int max = -INFINITY;
-    int min = INFINITY;
+    int max = numeric_limits<int>::lowest();
+    int min = numeric_limits<int>::max();
     
     GameDecision whoWins = checkForWinners();
     if (whoWins == player || whoWins == computer || isGameADraw())
@@ -44,6 +71,11 @@ int Game::minimax(bool playerTurn, int n)
     
     for (int i = 1; i < boardSize(); i++)
     {
+        char pieceLabel = playerTurn ? 'X' : 'O'; //place 'X' if it is player turn, else 'O'
+        if (playerTurn)
+        {
+            
+        }
         if(isEmpty(i))
         {
             char pieceLabel = playerTurn ? 'X' : 'O'; //place 'X' if it is player turn, else 'O'
@@ -65,7 +97,8 @@ int Game::minimax(bool playerTurn, int n)
                         positionMax = i;
                     }
                 }
-            } else
+            }
+            else
             {
                 if (gain < min)
                 {
@@ -112,7 +145,7 @@ bool Game::checkForConnectingLines(Chesspiece chess)
             (getPieceAtPos(3).getPieceLabel() == ch && getPieceAtPos(5).getPieceLabel() == ch && getPieceAtPos(7).getPieceLabel() == ch));
 }
 
-GameDecision Game::checkForWinners()
+GameDecision Game::checkForWinner()
 {
     GameDecision winResults = allelse;
     Chesspiece piece('X');
@@ -136,11 +169,8 @@ GameDecision Game::checkForWinners()
 void Game::printManual()
 {
     int size = boardSize();
-    cout << "Enter \"CONT\" to continue playing the last saved game, enter \"NEW\" to start a new game"<<endl;
-    string cmd;
-    cin >> cmd;
-    bool validInput = 0;
-    cout << "Please familiarize yourself with the laid out of the board:\n" << endl;
+    cout << "*****Tic-Tac-Toe*****" << endl;
+    cout << "Please familiarize yourself with the layout of the board:\n" << endl;
     cout << "\t\t\t";
     cout << LIGHT_PURPLE;
     for (int i = 1; i < boardSize(); i++)
@@ -149,21 +179,37 @@ void Game::printManual()
         if (i % 3 == 0)
             cout << "\n\t\t\t";
     }
-    cout << RESET;
-    while (!validInput){
-        if (cmd == "CONT"){
+    cout << RESET << endl;
+    cout << "Enter \"CONT\" to continue playing the last saved game, enter \"NEW\" to start a new game \n";
+    string cmd;
+    cin >> cmd;
+    bool validInput = 0;
+    
+    while (!validInput)
+    {
+        if (cmd == "CONT")
+        {
             validInput = 1;
             readGame();
         }
-        else if (cmd == "NEW"){
+        else if (cmd == "NEW")
+        {
             validInput = 1;
-            cout << LIGHT_PURPLE << "\nChoose the level of your opponent. Enter 1 or 2: " << RESET << endl;
+            cout << LIGHT_PURPLE << "\nChoose the level of your opponent. Enter 1 or 2." << RESET << endl;
             cout << "\t1. Easy \t 2. Impossible" << endl;
-            cout <<  LIGHT_PURPLE << "\nEnter 1 - 9 from your keyboard to place your move: "<< RESET <<endl;
+            cin >> GameLevel;
+            while (GameLevel != 1 && GameLevel != 2)
+            {
+                cout << "Please choose a level" << endl;
+                cout << "\t1. Easy \t 2. Impossible" << endl;
+                cin >> GameLevel;
+            }
+            cout << LIGHT_PURPLE << "\nEnter 1 - 9 from your keyboard to place your move."<< RESET <<endl;
         }
-        else {
-            cout << "Please enter a valid input \n"
-            "Enter \"CONTINUE\" to continue playing the last saved game, enter \"NEW\" to start a new game"<<endl;
+        else
+        {
+            cout << "Please enter a valid input \n";
+            cout << "Enter \"CONTINUE\" to continue playing the last saved game, enter \"NEW\" to start a new game \n";
             cin >> cmd;
         }
     }
@@ -173,7 +219,8 @@ void Game::printManual()
 // Purpose:     Start the game
 // Arguments:   None
 // Returns:     None
-void Game::start(){
+void Game::start()
+{
     cout << "You will start first! You will be \"X\":" << endl;
     gameContinue = true;
     string in;
@@ -184,17 +231,20 @@ void Game::start(){
         "enter \"SAVE\" to save the current game and exit\n"
         "Enter 1-9 to place your move: "<<endl;
         
-        // get user input
+        // Get user input
         cin >> in;
         int input = atoi(in.c_str());
-        if (in=="SAVE"){
-            // save current game
+        
+        // Save current game if user requests it
+        if (in=="SAVE")
+        {
             saveGame();
             gameContinue = false;
             continue;
         }
         
-        // check if user input is valid
+        // Check if user input is valid
+        // If so, check if the position is empty
         while  (!isValidPos(input) || !isEmpty(input))
         {
             cout << RED << "Please choose a valid move!" << RESET << endl;
@@ -206,11 +256,11 @@ void Game::start(){
         cout << "Board:\n";
         print_board();
         
-        GameDecision winner = checkForWinners();
+        GameDecision winner = checkForWinner();
         
         if (winner == player)
         {
-            cout << LIGHT_PURPLE << "You win!\n" << RESET << endl;
+            cout << LIGHT_PURPLE << "You win!:)\n" << RESET << endl;
             gameContinue = false;
         }
         else if (isGameADraw())
@@ -220,13 +270,25 @@ void Game::start(){
         }
         else
         {   // Impossible level robot, minimax agent, please modify and add random agent here
-            minimax(false, 0); //false indicates it is computer's turn
-            insertToBoard(getPositionMin(), robot_piece);
-            
-            cout << "Robot is making a move..." << endl;
-            cout << "And robot puts a O at " << getPositionMin() << endl;
-            print_board();
-            
+            if (GameLevel == 1)
+            {
+                randomMove();
+                insertToBoard(randomMove, robot_piece);
+                
+                cout << "Robot is making a move..." << endl;
+                cout << "And robot puts a O at " << getPositionMin() << endl;
+                print_board();
+            }
+            if (GameLevel == 2)
+            {
+                minimax(false, 0); //false indicates it is computer's turn
+                insertToBoard(getPositionMin(), robot_piece);
+                
+                cout << "Robot is making a move..." << endl;
+                cout << "And robot puts a O at " << getPositionMin() << endl;
+                print_board();
+            }
+                
             if (checkForWinners() == computer)
             {
                 cout << LIGHT_PURPLE << "Robot wins!" << RESET << endl;
