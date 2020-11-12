@@ -2,6 +2,7 @@
 #include "Chesspiece.h"
 #include <iostream>
 #include <fstream>
+#include <cctype>
 #include <limits>
 #include <cstdlib>
 #include <ctime>
@@ -47,22 +48,36 @@ int Game::getPositionMin()
 // Returns:     randomly generated position(1-9) (int)
 int Game::randomMove()
 {
-    bool isValidMove = false;
+    int n = 0;
     
-    srand(time(NULL));
-    int position = rand() % 9 + 1;
-    while (!isValidMove)
+    // Get the number of empty pieces
+    for (int i = 1; i < boardSize(); ++i)
     {
-        if (!isEmpty(position))
+        if (isEmpty(i))
         {
-            position = rand() % 9 + 1;
-        }
-        else
-        {
-            isValidMove = true;
-            break;
+            n++;
         }
     }
+    
+    int * ArrayofEmptyPieces = new int[n];
+    int index = 0;
+    
+    // Store the position of empty pieces in the array
+    for (int i = 1; i < boardSize(); ++i)
+    {
+        if (isEmpty(i))
+        {
+            ArrayofEmptyPieces[index] = i;
+            index++;
+        }
+    }
+    
+    // Get the random generated position
+    srand(time(NULL));
+    int positionofArray = rand() % n;
+    int position = ArrayofEmptyPieces[positionofArray];
+    delete [] ArrayofEmptyPieces;
+    
     return position;
 }
 
@@ -90,7 +105,7 @@ int Game::minimax(bool playerTurn, int n)
             
             gain = minimax(!playerTurn, n + 1);
             
-            piece.setPieceLabel('_');
+            piece.setPieceLabel('-');
             insertToBoard(i, piece);
             
             if (playerTurn)
@@ -141,7 +156,7 @@ bool Game::isGameADraw()
 }
 
 // checkForConnectingLines
-// Purpose:     Check if any player's chesses connect a line
+// Purpose:     Check if any player's chesses connect a line (vertical line, horizontal line or diagonal line
 // Arguments:   chess (Chesspiece)
 // Returns:     If any player's chesses connect a line or not (bool)
 bool Game::checkForConnectingLines(Chesspiece chess)
@@ -167,11 +182,11 @@ GameDecision Game::checkForWinner()
 {
     GameDecision winResults = allelse;
     
-    if (checkForConnectingLines(player_piece.getPieceLabel()))
+    if (checkForConnectingLines(player_piece))
     {
         winResults = player;
     }
-    else if(checkForConnectingLines(robot_piece.getPieceLabel()))
+    else if(checkForConnectingLines(robot_piece))
     {
         winResults = computer;
     }
@@ -202,7 +217,6 @@ void Game::printManual()
     string cmd;
     cin >> cmd;
     bool validInput = 0;
-    int GameLevel;
     
     while (!validInput)
     {
@@ -295,10 +309,11 @@ void Game::start()
         {   // Easy level robot makes random move
             if (GameLevel == 1)
             {
-                insertToBoard(randomMove(), robot_piece);
+                int position = randomMove();
+                insertToBoard(position, robot_piece);
                 
                 cout << "Robot is making a move..." << endl;
-                cout << "And robot puts a O at " << randomMove() << endl;
+                cout << "And robot puts a O at " << position << endl;
                 print_board();
             }
             
@@ -313,7 +328,7 @@ void Game::start()
                 print_board();
             }
                 
-            if (checkForWinner() == computer)
+            if (winner == computer)
             {
                 cout << LIGHT_PURPLE << "Robot wins!" << RESET << endl;
                 gameContinue = false;
@@ -342,6 +357,7 @@ void Game::saveGame()
             if (i % 3 == 0)
                 myfile << "\n";
         }
+        myfile << GameLevel;
         myfile.close();
     }
     else cout << "Unable to save the game";
@@ -352,25 +368,48 @@ void Game::saveGame()
 // Arguments:   None
 // Returns:     None
 void Game::readGame(){
-    string line;
+    char piece;
     ifstream myfile ("board.txt");
     if (myfile.is_open())
     {
-        char piece;
         int position = 1;
-        while ( myfile >> piece ){
-            if (piece == 'X') {
+        while (myfile >> piece)
+        {
+            if (piece == 'X')
+            {
                 insertToBoard(position, player_piece);
             }
-            else if (piece == 'O') {
+            else if (piece == 'O')
+            {
                 insertToBoard(position, robot_piece);
+            }
+            // Use ASCII Chart to get the integer value of GameLevel
+            else if (isdigit(piece))
+            {
+                GameLevel = piece - '0';
             }
             position ++;
         }
+        
         cout << "\nBoard loaded from the last saved game:\n";
         print_board();
         myfile.close();
     }
     
-    else cout << "Unable to open file";
+    else
+    {
+        cout << "Unable to open file." << endl;
+        cout << "Start a new game." << endl;
+        cout << LIGHT_PURPLE << "\nChoose the level of your opponent. Enter 1 or 2." << RESET << endl;
+        cout << "\t1. Easy \t 2. Impossible" << endl;
+        cin >> GameLevel;
+        while (GameLevel != 1 && GameLevel != 2)
+        {
+            cout << "Please choose a level" << endl;
+            cout << "\t1. Easy \t 2. Impossible" << endl;
+            cin >> GameLevel;
+        }
+        cout << "The board is empty now." << endl;
+        print_board();
+    }
 }

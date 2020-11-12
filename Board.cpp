@@ -15,7 +15,7 @@ Board::Board()
     board = new char(BOARD_SIZE);
     for (int i = 1; i < BOARD_SIZE; ++i)
     {
-        board[i] = '_';
+        board[i] = '-';
     }
 }
 
@@ -59,7 +59,7 @@ bool Board::insertToBoard(int pos, Chesspiece input)
 bool Board::isEmpty(int pos)
 {
     
-    return (board[pos] == '_');
+    return (board[pos] == '-');
 }
 
 // removePos

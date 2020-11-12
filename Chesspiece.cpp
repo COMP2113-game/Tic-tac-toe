@@ -30,7 +30,7 @@ const char Chesspiece::getPieceLabel()
 // Arguments:   piece (char)
 // Returns:     None
 void Chesspiece::setPieceLabel(char piece){
-    if (piece == 'X' || piece == 'O' || piece == '_')
+    if (piece == 'X' || piece == 'O' || piece == '-')
     {
         pieceLabel = piece;
     } else {

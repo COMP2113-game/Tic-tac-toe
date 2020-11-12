@@ -13,3 +13,10 @@ tictactoe.o: tictactoe.cpp Game.h Board.h Chesspiece.h
 game: tictactoe.o Game.o Board.o Chesspiece.o
     g++ -pedantic-errors -std=c++11 tictactoe.o Game.o Board.o Chesspiece.o -o game
 
+clean:
+    rm -f Game tictactoe.o Game.o Board.o Chesspiece.o board.txt
+
+deleteSavedGame:
+    rm board.txt
+
+.PHONY: clean deleteSavedGame
