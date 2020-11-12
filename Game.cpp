@@ -224,6 +224,8 @@ void Game::printManual()
                 cin >> GameLevel;
             }
             cout << LIGHT_PURPLE << "\nEnter 1 - 9 from your keyboard to place your move."<< RESET <<endl;
+            cout << "The board is empty now." << endl;
+            print_board();
         }
         else
         {
@@ -248,9 +250,9 @@ void Game::start()
     // loop until there is a winner or user saves the current game
     while(gameContinue)
     {
-        cout << "It's your turn now, "
-        "enter \"SAVE\" to save the current game and exit\n"
-        "Enter 1-9 to place your move: "<<endl;
+        cout << "It's your turn now, ";
+        cout << "enter \"SAVE\" to save the current game and exit.\n";
+        cout << "Enter 1-9 to place your move: "<<endl;
         
         // Get user input
         cin >> input;
