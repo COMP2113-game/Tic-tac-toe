@@ -7,8 +7,9 @@
 class Chesspiece {
 public:
     Chesspiece();
+    Chesspiece(char piece);
     const char getPieceLabel();
-    void setPieceLabel(char Chesspiece);
+    void setPieceLabel(char piece);
 private:
     char pieceLabel;
 };

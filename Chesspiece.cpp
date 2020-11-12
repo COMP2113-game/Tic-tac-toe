@@ -1,11 +1,19 @@
 #include "Chesspiece.h"
 
-// Chesspiece
+// Chesspiece()
 // Purpose:     Initialize the pieceLabel as the blank space
 // Arguments:   None
 // Returns:     None
 Chesspiece::Chesspiece(){
     pieceLabel = ' ';
+}
+
+// Chesspiece(char piece)
+// Purpose:     Initialize the pieceLabel as the argument
+// Arguments:   piece (char)
+// Returns:     None
+Chesspiece::Chesspiece(char piece){
+    setPieceLabel(piece);
 }
 
 // getPieceLabel

@@ -53,13 +53,14 @@ int Game::randomMove()
     int position = rand() % 9 + 1;
     while (!isValidMove)
     {
-        if (isEmpty(position))
+        if (!isEmpty(position))
         {
-            position ++;
+            position = rand() % 9 + 1;
         }
         else
         {
             isValidMove = true;
+            break;
         }
     }
     return position;
@@ -289,7 +290,7 @@ void Game::start()
             gameContinue = false;
         }
         else
-        {   // Impossible level robot, minimax agent, please modify and add random agent here
+        {   // Easy level robot makes random move
             if (GameLevel == 1)
             {
                 insertToBoard(randomMove(), robot_piece);
@@ -298,6 +299,8 @@ void Game::start()
                 cout << "And robot puts a O at " << randomMove() << endl;
                 print_board();
             }
+            
+            // Impossible level robot makes move
             if (GameLevel == 2)
             {
                 minimax(false, 0); //false indicates it is computer's turn
