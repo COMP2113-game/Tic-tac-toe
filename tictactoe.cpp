@@ -4,6 +4,7 @@
 
 #include <iostream>
 #include <string>
+#include <fstream>
 
 #include "Game.h"
 #include "Chesspiece.h"
@@ -13,10 +14,8 @@ int main()
 {
     Game game;
     game.printManual();
-
-    cout << "The board is empty now." << endl;
-    game.print_board();
     game.start();
-
+    
     return 0;
 }
+

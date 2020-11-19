@@ -1,11 +1,12 @@
 #include "Board.h"
 #include <iostream>
 using namespace std;
-// sets the console output to different colors 
-#define RED "\033[22;31m" 
-#define RESET "\033[0m" 
+// sets the console output to different colors
+#define RED "\033[22;31m"
+#define RESET "\033[0m"
 #define LIGHT_GREEN "\033[01;32m"
-#define BOARD_SIZE 10
+
+const int BOARD_SIZE = 10;
 
 /* Constructor */
 Board::Board()
@@ -14,8 +15,8 @@ Board::Board()
     board = new char(BOARD_SIZE);
     for (int i = 1; i < BOARD_SIZE; ++i)
     {
-        board[i] = '_';
-    }    
+        board[i] = '-';
+    }
 }
 
 /* Destructor */
@@ -58,7 +59,7 @@ bool Board::insertToBoard(int pos, Chesspiece input)
 bool Board::isEmpty(int pos)
 {
     
-    return (board[pos] == '_');
+    return (board[pos] == '-');
 }
 
 // removePos
@@ -105,7 +106,7 @@ bool Board::isValidPos(int pos)
 void Board::print_board()
 {
     for (int i = 1; i < BOARD_SIZE; i++)
-    {   
+    {
         Chesspiece piece = getPieceAtPos(i);
         if (piece.getPieceLabel() == 'X')
             cout << LIGHT_GREEN << 'X' << RESET << " ";

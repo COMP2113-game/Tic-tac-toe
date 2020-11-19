@@ -1,8 +1,9 @@
 #ifndef BOARD_H
 #define BOARD_H
 #include "Chesspiece.h"
+
 class Board {
-  public:
+public:
     Board();
     ~Board();
     bool insertToBoard(int pos, Chesspiece input);
@@ -12,8 +13,8 @@ class Board {
     const int boardSize();
     bool isValidPos(int pos);
     void print_board();
-  
-  protected:  
+    
+protected:
     char *board;
 };
 #endif
