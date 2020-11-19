@@ -8,8 +8,6 @@ Chen Yulin (3035447398)
 
 Wang ManLin (3035535016)
 
-We have discussed about two games that could be implemented for this project, but cannot decide which one fits the requirement better. Therefore, we enclosed two proposals and we wish to get some feedback from the teaching team.
-
 ## Tic-tac-toe
 
 ### 1. Game Description
@@ -24,7 +22,7 @@ In this project, a Tic-Tac-Toe game will be designed in which two players take t
 
 #### Generation of game sets or events
 
-This game will allow users to choose between two different game modes: Easy and Impossible. In Easy mode, the user will play against an AI agent at the chosen level (easy, medium and impossible level). While in two-players mode, two users will take turns to move.
+This game will allow users to choose between two different game level: Easy and Impossible. In the Easy level, the user will play against the computer which moves randomly. In the Impossible level, the user will play against an AI agent who uses minimax strategy.
 
 #### Data structures for storing game status: 
 
@@ -32,17 +30,40 @@ A 3 * 3 array and a boolean variable (indicating who is the next one to move) wi
 
 #### File input/output
 
-The game can be paused and the game progress will be kept in the archive as a text (.txt) file. When a new game is launched, the user will be asked whether to continue the game or start a new game. If the user chooses to continue the game, the program will read the text file storing the game progress.
+The game can be paused and the game progress will be kept in the archive as a text (board.txt) file. When a new game is launched, the user will be asked whether to continue the game or start a new game and makes the choice by entering the command "CONT" or "NEW". If the user chooses to continue the game, the program will read the text file (board.txt) storing the game progress.
 
 #### Dynamic memory management
 
-* The User is allowed to regret a false move at most once in the whole game, therefore the last game status (including previous move of the user and the opponent) will be kept in the memory.
-
-* Search trees used by AI agents with certain space complexity will be stored in the memory.
+* The board of the game is stored in dynamic char array and can be deleted at the end of game to free up the memory.
 
 #### Program codes in multiple files
 
-* A main.cpp file to execute the game
+* A chesspiece.h file to store the function declaration of the chesspiece
+
+* A board.h file to store the function declaration of the board
+
+* A game.h file to store the function declaration of the board
+
+* A chesspiece.cpp file to define functions to set and get the label of chesspiece 
+
+* A board.cpp file to define a series of functions to check the status of the board and specified position in it and insert chesspiece to the board
+
+* A game.cpp file to define a series of functions of the game strategy, checking the status of game, storing and accessing the last saved game, and printing the game manual
+
+* A tictactoe.cpp file to execute the game
 
 * A Makefile to compile and run the game on the shell
 
+### 3. Tips for playing the game
+
+* Makefile is created for easy compilation. Enter "make" to compile.
+
+* Enter "./game" to enjoy the funny game! 
+
+* Choose whether to start a brand new game or continue the last saved game. Enter "CONT" or "NEW" to choose!
+
+* You will start first and your chesspieces will be denoted by "X" while the computer's placement are denoted by "O".
+
+* 1-9 denotes the nine position of the board. Enter any number from 1 to 9 to place your chesspiece.
+
+* Have fun with the game please~
