@@ -26,7 +26,7 @@ This game will allow users to choose between two different game level: Easy and 
 
 #### Data structures for storing game status: 
 
-A 3 * 3 array and a boolean variable (indicating who is the next one to move) will be used to store the game status.
+A dynamic array of user-defined length and a boolean variable (indicating who is the next one to move) will be used to store the game status.
 
 #### File input/output
 
@@ -56,9 +56,9 @@ The game can be paused and the game progress will be kept in the archive as a te
 
 ### 3. Tips for playing the game
 
-* Makefile is created for easy compilation. Enter "make" to compile.
+* Makefile is created for easy compilation. Type `make` to compile.
 
-* Enter "./game" to enjoy the funny game! 
+* Type `./game` to enjoy the funny game! 
 
 * Choose whether to start a brand new game or continue the last saved game. Enter "CONT" or "NEW" to choose!
 

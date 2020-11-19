@@ -96,7 +96,7 @@ Chesspiece Board::getPieceAtPos(int pos)
 // Returns:     if the position is valid (bool)
 bool Board::isValidPos(int pos)
 {
-    return (pos >= 1 && pos <= 9);
+    return (pos >= 1 && pos <= BOARD_SIZE);
 }
 
 // print_board

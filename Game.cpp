@@ -113,10 +113,7 @@ int Game::minimax(bool playerTurn, int n)
                 if (gain > max)
                 {
                     max = gain;
-                    if (n == 0)
-                    {
-                        positionMax = i;
-                    }
+                    if (n == 0) positionMax = i;
                 }
             }
             else
@@ -124,10 +121,7 @@ int Game::minimax(bool playerTurn, int n)
                 if (gain < min)
                 {
                     min = gain;
-                    if (n == 0)
-                    {
-                        positionMin = i;
-                    }
+                    if (n == 0) positionMin = i;
                 }
             }
         }

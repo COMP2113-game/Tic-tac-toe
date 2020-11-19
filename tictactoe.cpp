@@ -15,7 +15,6 @@ int main()
     Game game;
     game.printManual();
     game.start();
-    
     return 0;
 }
 
