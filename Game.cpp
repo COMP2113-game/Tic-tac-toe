@@ -244,7 +244,7 @@ void Game::printManual()
         else
         {
             cout << "Please enter a valid input \n";
-            cout << "Enter \"CONTINUE\" to continue playing the last saved game, enter \"NEW\" to start a new game \n";
+            cout << "Enter \"CONT\" to continue playing the last saved game, enter \"NEW\" to start a new game \n";
             cin >> cmd;
         }
     }
@@ -265,7 +265,7 @@ void Game::start()
     while(gameContinue)
     {
         cout << "It's your turn now, ";
-        cout << "enter \"SAVE\" to save the current game and exit.\n";
+        cout << "enter " << LIGHT_PURPLE << "\"SAVE\"" << RESET << " to save the current game and exit.\n";
         cout << "Enter 1-9 to place your move: "<<endl;
         
         // Get user input

@@ -113,7 +113,7 @@ void Board::print_board()
         else if (piece.getPieceLabel() == 'O')
             cout << RED << 'O' << RESET << " ";
         else
-            cout << '-' << " ";
+            cout << i << " ";
         if (i % 3 == 0)
             cout << "\n";
     }
