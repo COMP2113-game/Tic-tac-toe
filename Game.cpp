@@ -321,7 +321,9 @@ void Game::start()
                 cout << "And robot puts a O at " << getPositionMin() << endl;
                 print_board();
             }
-                
+            
+            GameDecision winner = checkForWinner();
+            
             if (winner == computer)
             {
                 cout << LIGHT_PURPLE << "Robot wins!" << RESET << endl;
