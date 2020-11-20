@@ -7,7 +7,6 @@
 #include <fstream>
 
 #include "Game.h"
-#include "Chesspiece.h"
 using namespace std;
 
 int main()
