@@ -6,7 +6,7 @@ Group 28
 
 Chen Yulin (3035447398)
 
-Wang ManLin (3035535016)
+Wang Manlin (3035535016)
 
 ### 1. Game Description
 
