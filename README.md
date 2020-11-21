@@ -1,14 +1,12 @@
-# advance-tic-tac-toe
+# Tic-tac-toe
 
-# 1. Team Member
+## Team Member
 
 Group 28
 
 Chen Yulin (3035447398)
 
 Wang ManLin (3035535016)
-
-## Tic-tac-toe
 
 ### 1. Game Description
 
@@ -24,7 +22,7 @@ In this project, a Tic-Tac-Toe game will be designed in which player and robot t
 
 This game will allow users to choose between two different game level: Easy and Impossible. In the Easy level, the user will play against the robot which moves randomly. In the Impossible level, the user will play against an AI agent who uses minimax strategy.
 
-#### Data structures for storing game status: 
+#### Data structures for storing game status
 
 A dynamic array of user-defined length and a boolean variable (indicating who is the next one to move) will be used to store the game status.
 
