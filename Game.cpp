@@ -6,6 +6,7 @@
 #include <limits>
 #include <cstdlib>
 #include <ctime>
+#include <vector>
 
 #define LIGHT_PURPLE "\033[01;35m"
 #define RED "\033[22;31m"
@@ -18,6 +19,11 @@ int GameLevel;
 const int MAX_BOARD_SIZE = 10;
 Chesspiece player_piece('X');
 Chesspiece robot_piece('O');
+int n_player = 0;
+int n_robot = 0;
+
+int * playermovements = new int [5];
+int * robotmovements = new int [5];
 
 Game::Game()
 {
@@ -102,12 +108,29 @@ int Game::minimax(bool playerTurn, int n)
             char pieceLabel = playerTurn ? 'X' : 'O'; //place 'X' if it is player's turn, else 'O'
             Chesspiece piece(pieceLabel);
             insertToBoard(i, piece);
-            
+            // insert into movement array
+            if (pieceLabel == 'X') {
+                playermovements[n_player] = i;
+                n_player ++;
+            }
+            else {
+                robotmovements[n_robot] = i;
+                n_robot ++;
+            }
             gain = minimax(!playerTurn, n + 1);
             
             piece.setPieceLabel('-');
             insertToBoard(i, piece);
-            
+            // delete from movement array
+            if (pieceLabel == 'X') {
+                n_player --;
+                playermovements[n_player] = 0;
+            }
+            else {
+                n_robot --;
+                robotmovements[n_robot] = 0;
+            }
+
             if (playerTurn)
             {
                 if (gain > max)
@@ -149,23 +172,55 @@ bool Game::isGameADraw()
     return (winResults == allelse && boardFilled);
 }
 
+// isSubset
+// Purpose:     Check if arr2 is cintained in arr1
+// Arguments:   arr1[] (int), arr2[] (int), n_arr1 (int), n_arr2 (int)
+// Returns:     If the array is the subset of the case or not (bool)
+bool Game::isSubset(int arr1[], int arr2[], int arr1Size, int arr2Size)
+{
+    int i = 0; 
+    int j = 0; 
+    for (i = 0; i < arr2Size; i++) { 
+        for (j = 0; j < arr1Size; j++) { 
+            if (arr2[i] == arr1[j]) 
+                break; 
+        } 
+  
+        //If break isn't executed, arr2 is not the subset of arr1
+        if (j == arr1Size) 
+            return 0; 
+    } 
+  
+    //It the function is executed to here, all elements of arr2[] are present in arr1[]
+    return 1; 
+}
+
+
 // checkForConnectingLines
 // Purpose:     Check if any player's chesses connect a line (vertical line, horizontal line or diagonal line
 // Arguments:   chess (Chesspiece)
 // Returns:     If any player's chesses connect a line or not (bool)
-bool Game::checkForConnectingLines(Chesspiece chess)
+bool Game::checkForConnectingLines(int * movements)
 {
-    char ch = chess.getPieceLabel();
+    
+    int case1[3] = {1,2,3};
+    int case2[3] = {4,5,6};
+    int case3[3] = {7,8,9};
+    int case4[3] = {1,4,7};
+    int case5[3] = {2,5,8};
+    int case6[3] = {3,6,9};
+    int case7[3] = {1,5,9};
+    int case8[3] = {3,5,7};
     
     return (
-            (getPieceAtPos(1).getPieceLabel() == ch && getPieceAtPos(2).getPieceLabel() == ch && getPieceAtPos(3).getPieceLabel() == ch) ||
-            (getPieceAtPos(4).getPieceLabel() == ch && getPieceAtPos(5).getPieceLabel() == ch && getPieceAtPos(6).getPieceLabel() == ch) ||
-            (getPieceAtPos(7).getPieceLabel() == ch && getPieceAtPos(8).getPieceLabel() == ch && getPieceAtPos(9).getPieceLabel() == ch) ||
-            (getPieceAtPos(1).getPieceLabel() == ch && getPieceAtPos(4).getPieceLabel() == ch && getPieceAtPos(7).getPieceLabel() == ch) ||
-            (getPieceAtPos(2).getPieceLabel() == ch && getPieceAtPos(5).getPieceLabel() == ch && getPieceAtPos(8).getPieceLabel() == ch) ||
-            (getPieceAtPos(3).getPieceLabel() == ch && getPieceAtPos(6).getPieceLabel() == ch && getPieceAtPos(9).getPieceLabel() == ch) ||
-            (getPieceAtPos(1).getPieceLabel() == ch && getPieceAtPos(5).getPieceLabel() == ch && getPieceAtPos(9).getPieceLabel() == ch) ||
-            (getPieceAtPos(3).getPieceLabel() == ch && getPieceAtPos(5).getPieceLabel() == ch && getPieceAtPos(7).getPieceLabel() == ch));
+        isSubset(movements, case1, sizeof(movements),3)||
+        isSubset(movements, case2, sizeof(movements),3)||
+        isSubset(movements, case3, sizeof(movements),3)||
+        isSubset(movements, case4, sizeof(movements),3)||
+        isSubset(movements, case5, sizeof(movements),3)||
+        isSubset(movements, case6, sizeof(movements),3)||
+        isSubset(movements, case7, sizeof(movements),3)||
+        isSubset(movements, case8, sizeof(movements),3));
 }
 
 // checkForWinner
@@ -176,11 +231,11 @@ GameDecision Game::checkForWinner()
 {
     GameDecision winResults = allelse;
     
-    if (checkForConnectingLines(player_piece))
+    if (checkForConnectingLines(playermovements))
     {
         winResults = player;
     }
-    else if(checkForConnectingLines(robot_piece))
+    else if(checkForConnectingLines(robotmovements))
     {
         winResults = robot;
     }
@@ -227,7 +282,7 @@ void Game::printManual()
             cin >> GameLevel;
             while (GameLevel != 1 && GameLevel != 2)
             {
-                cout << RED << "Please choose a valid level!" << RESET << endl;
+                cout << "Please choose a level" << endl;
                 cout << "\t1. Easy \t 2. Impossible" << endl;
                 cin >> GameLevel;
             }
@@ -237,7 +292,7 @@ void Game::printManual()
         }
         else
         {
-            cout << RED << "Please enter a valid input!" << RESET << endl;;
+            cout << "Please enter a valid input \n";
             cout << "Enter \"CONT\" to continue playing the last saved game, enter \"NEW\" to start a new game \n";
             cin >> cmd;
         }
@@ -283,6 +338,8 @@ void Game::start()
             movePosition = atoi(input.c_str());
         }
         insertToBoard(movePosition, player_piece);
+        playermovements[n_player] = movePosition;
+        n_player ++;
         
         cout << "Board:\n";
         print_board();
@@ -292,11 +349,15 @@ void Game::start()
         if (winner == player)
         {
             cout << LIGHT_PURPLE << "You win!:)\n" << RESET << endl;
+            delete [] playermovements;
+            delete [] robotmovements;
             gameContinue = false;
         }
         else if (isGameADraw())
         {
             cout << LIGHT_PURPLE << "It is a draw guys!" << RESET << endl;
+            delete [] playermovements;
+            delete [] robotmovements;
             gameContinue = false;
         }
         else
@@ -306,8 +367,11 @@ void Game::start()
                 int position = randomMove();
                 insertToBoard(position, robot_piece);
                 
+
                 cout << "Robot is making a move..." << endl;
                 cout << "And robot puts a O at " << position << endl;
+                robotmovements[n_robot] = position;
+                n_robot ++;
                 print_board();
             }
             
@@ -319,6 +383,8 @@ void Game::start()
                 
                 cout << "Robot is making a move..." << endl;
                 cout << "And robot puts a O at " << getPositionMin() << endl;
+                robotmovements[n_robot] = getPositionMin();
+                n_robot ++;
                 print_board();
             }
             
@@ -327,6 +393,8 @@ void Game::start()
             if (winner == robot)
             {
                 cout << LIGHT_PURPLE << "Robot wins!" << RESET << endl;
+                delete [] playermovements;
+                delete [] robotmovements;
                 gameContinue = false;
             }
         }

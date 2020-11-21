@@ -16,8 +16,9 @@ private:
     int getPositionMin();
     int randomMove();
     int minimax(bool playerTurn, int n);
+    bool isSubset(int arr1[], int arr2[], int arr1Size, int arr2Size);
     bool isGameADraw();
-    bool checkForConnectingLines(Chesspiece chess);
+    bool checkForConnectingLines(int * movements);
     GameDecision checkForWinner();
     void saveGame();
     void readGame();
