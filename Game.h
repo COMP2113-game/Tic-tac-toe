@@ -3,7 +3,7 @@
 
 #include "Board.h"
 #include "Chesspiece.h"
-typedef enum {player = 1, computer = -1, allelse = 0} GameDecision;
+typedef enum {player = 1, robot = -1, allelse = 0} GameDecision;
 
 class Game : public Board {
 public:

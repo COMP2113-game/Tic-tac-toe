@@ -92,7 +92,7 @@ int Game::minimax(bool playerTurn, int n)
     int min = numeric_limits<int>::max();
     
     GameDecision whoWins = checkForWinner();
-    if (whoWins == player || whoWins == computer || isGameADraw())
+    if (whoWins == player || whoWins == robot || isGameADraw())
         return whoWins;
     
     for (int i = 1; i < boardSize(); i++)
@@ -182,7 +182,7 @@ GameDecision Game::checkForWinner()
     }
     else if(checkForConnectingLines(robot_piece))
     {
-        winResults = computer;
+        winResults = robot;
     }
     return winResults;
 }
@@ -322,9 +322,9 @@ void Game::start()
                 print_board();
             }
             
-            GameDecision winner = checkForWinner();
+            winner = checkForWinner();
             
-            if (winner == computer)
+            if (winner == robot)
             {
                 cout << LIGHT_PURPLE << "Robot wins!" << RESET << endl;
                 gameContinue = false;
