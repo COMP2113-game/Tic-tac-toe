@@ -227,7 +227,7 @@ void Game::printManual()
             cin >> GameLevel;
             while (GameLevel != 1 && GameLevel != 2)
             {
-                cout << "Please choose a level" << endl;
+                cout << RED << "Please choose a valid level!" << RESET << endl;
                 cout << "\t1. Easy \t 2. Impossible" << endl;
                 cin >> GameLevel;
             }
@@ -237,7 +237,7 @@ void Game::printManual()
         }
         else
         {
-            cout << "Please enter a valid input \n";
+            cout << RED << "Please enter a valid input!" << RESET << endl;;
             cout << "Enter \"CONT\" to continue playing the last saved game, enter \"NEW\" to start a new game \n";
             cin >> cmd;
         }
