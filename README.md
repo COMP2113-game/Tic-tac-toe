@@ -12,7 +12,7 @@ Wang ManLin (3035535016)
 
 ### 1. Game Description
 
-In this project, a Tic-Tac-Toe game will be designed in which two players take turns to place a chess(O or X) to complete a row, a column, or a diagonal with either three O's or three X's drawn in the spaces of a grid of nine squares. The first one who succeeds in placing three of their marks in a horizontal, vertical, or diagonal row is the winner. 
+In this project, a Tic-Tac-Toe game will be designed in which player and robot take turns to place a chess(O or X) to complete a row, a column, or a diagonal with either three O's or three X's drawn in the spaces of a grid of nine squares. The first one who succeeds in placing three of their marks in a horizontal, vertical, or diagonal row is the winner. 
 
 <p align="center">
   <img width="400" src="image/1.png">
@@ -22,7 +22,7 @@ In this project, a Tic-Tac-Toe game will be designed in which two players take t
 
 #### Generation of game sets or events
 
-This game will allow users to choose between two different game level: Easy and Impossible. In the Easy level, the user will play against the computer which moves randomly. In the Impossible level, the user will play against an AI agent who uses minimax strategy.
+This game will allow users to choose between two different game level: Easy and Impossible. In the Easy level, the user will play against the robot which moves randomly. In the Impossible level, the user will play against an AI agent who uses minimax strategy.
 
 #### Data structures for storing game status: 
 
@@ -34,7 +34,7 @@ The game can be paused and the game progress will be kept in the archive as a te
 
 #### Dynamic memory management
 
-* The board of the game is stored in dynamic char array and can be deleted at the end of game to free up the memory.
+* A dynamic char array is used to store the empty position in the function Game::randomMove() for the robot to make the random move in the easy level. The dynamic array is deleted after the robot has made a choice among the empty positions.
 
 #### Program codes in multiple files
 
