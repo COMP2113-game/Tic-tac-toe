@@ -34,6 +34,8 @@ The game can be paused and the game progress will be kept in the archive as a te
 
 * A dynamic char array is used to store the empty position in the function Game::randomMove() for the robot to make the random move in the easy level. The dynamic array is deleted after the robot has made a choice among the empty positions.
 
+* Two dynamic int arrays are used to store the player's movements and the robot's movements respectively to check if the game ends (i.e. Player's/Robot's chesspieces connect as a line). The arrays are deleted after printing out the winner result. 
+
 #### Program Codes in Multiple Files
 
 * A chesspiece.h file to store the function declaration of the chesspiece
