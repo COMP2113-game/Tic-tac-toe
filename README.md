@@ -16,25 +16,25 @@ In this project, a Tic-Tac-Toe game will be designed in which player and robot t
   <img width="400" src="image/1.png">
 </p>
 
-### 2. Features to be implemented
+### 2. Features to Be Implemented
 
-#### Generation of game sets or events
+#### Generation of Game Sets or Events
 
 This game will allow users to choose between two different game level: Easy and Impossible. In the Easy level, the user will play against the robot which moves randomly. In the Impossible level, the user will play against an AI agent who uses minimax strategy.
 
-#### Data structures for storing game status
+#### Data Structures for Storing Game Status
 
 A dynamic array of user-defined length and a boolean variable (indicating who is the next one to move) will be used to store the game status.
 
-#### File input/output
+#### File Input/Output
 
 The game can be paused and the game progress will be kept in the archive as a text (board.txt) file. When a new game is launched, the user will be asked whether to continue the game or start a new game and makes the choice by entering the command "CONT" or "NEW". If the user chooses to continue the game, the program will read the text file (board.txt) storing the game progress.
 
-#### Dynamic memory management
+#### Dynamic Memory Management
 
 * A dynamic char array is used to store the empty position in the function Game::randomMove() for the robot to make the random move in the easy level. The dynamic array is deleted after the robot has made a choice among the empty positions.
 
-#### Program codes in multiple files
+#### Program Codes in Multiple Files
 
 * A chesspiece.h file to store the function declaration of the chesspiece
 
@@ -52,7 +52,7 @@ The game can be paused and the game progress will be kept in the archive as a te
 
 * A Makefile to compile and run the game on the shell
 
-### 3. Tips for playing the game
+### 3. Compilation And Execution Instructions
 
 * Makefile is created for easy compilation. Type `make` to compile.
 
