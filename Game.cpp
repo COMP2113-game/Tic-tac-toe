@@ -366,12 +366,12 @@ void Game::start()
             {
                 int position = randomMove();
                 insertToBoard(position, robot_piece);
-                
+                robotmovements[n_robot] = position;
+                n_robot ++;
 
                 cout << "Robot is making a move..." << endl;
                 cout << "And robot puts a O at " << position << endl;
-                robotmovements[n_robot] = position;
-                n_robot ++;
+                
                 print_board();
             }
             
@@ -380,11 +380,12 @@ void Game::start()
             {
                 minimax(false, 0); //false indicates it is computer's turn
                 insertToBoard(getPositionMin(), robot_piece);
+                robotmovements[n_robot] = getPositionMin();
+                n_robot ++;
                 
                 cout << "Robot is making a move..." << endl;
                 cout << "And robot puts a O at " << getPositionMin() << endl;
-                robotmovements[n_robot] = getPositionMin();
-                n_robot ++;
+                
                 print_board();
             }
             
@@ -442,10 +443,15 @@ void Game::readGame(){
             if (piece == 'X')
             {
                 insertToBoard(position, player_piece);
+                playermovements[n_player] = position;
+                n_player ++;
+
             }
             else if (piece == 'O')
             {
                 insertToBoard(position, robot_piece);
+                robotmovements[n_robot] = position;
+                n_robot ++;
             }
             // Use ASCII Chart to get the integer value of GameLevel
             else if (isdigit(piece))
